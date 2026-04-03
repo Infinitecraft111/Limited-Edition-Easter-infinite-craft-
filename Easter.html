@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Craft | Easter Edition 🐰🥚</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #8B6914;
+            --secondary: #D4A017;
+            --accent: #FF6B6B;
+            --light: #F5F5DC;
+            --dark: #2C2C2C;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --danger: #FF5252;
+            --pet: #FFB347;
+            --mystical: #BA68C8;
+            --food: #FF8C42;
+            --tech: #42A5F5;
+            --studio: #26A69A;
+            --egg: #FFD700;
+            --bunny: #E8E8E8;
+        }
+
+        body {
+            background: linear-gradient(135deg, #2C2C2C, #1A1A1A);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Easter Eggs scattered around */
+        .easter-egg {
+            position: fixed;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s;
+            opacity: 0.7;
+        }
+
+        .easter-egg:hover {
+            transform: scale(1.2);
+            opacity: 1;
+        }
+
+        .egg-1 { top: 10%; left: 2%; }
+        .egg-2 { top: 20%; right: 2%; }
+        .egg-3 { bottom: 15%; left: 3%; }
+        .egg-4 { bottom: 25%; right: 3%; }
+        .egg-5 { top: 50%; left: 1%; }
+        .egg-6 { top: 70%; right: 1%; }
+
+        /* Bunny ears animation */
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+        }
+
+        .bunny-ears {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3rem;
+            opacity: 0.3;
+            pointer-events: none;
+            animation: wiggle 3s infinite;
+        }
+
+        header {
+            background-color: rgba(44, 44, 44, 0.95);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2.2rem;
+            color: var(--accent);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--egg), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .holiday-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .holiday-link {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            text-decoration: none;
+            color: var(--light);
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .holiday-link:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .account-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            flex: 1;
+        }
+
+        .game-area {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+
+        .crafting-board {
+            background: rgba(44, 44, 44, 0.8);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .board-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .board-title h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .elements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+            max-height: 450px;
+            overflow-y: auto;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+        }
+
+        .element {
+            background: linear-gradient(135deg, #555, #333);
+            border-radius: 12px;
+            padding: 1.2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: relative;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .element:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+            border-color: var(--egg);
+        }
+
+        .element i {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .element span {
+            display: block;
+            font-weight: 600;
+        }
+
+        /* Special Easter element styling */
+        .egg-element {
+            background: linear-gradient(135deg, #D4A017, #8B6914);
+            animation: egg-glow 2s infinite;
+        }
+
+        @keyframes egg-glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+        }
+
+        .bunny-element {
+            background: linear-gradient(135deg, #E8E8E8, #C0C0C0);
+            color: #333;
+        }
+
+        .crafting-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 2.5rem 0;
+            gap: 1.5rem;
+        }
+
+        .slot {
+            width: 160px;
+            height: 160px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 3.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px dashed rgba(255, 215, 0, 0.3);
+        }
+
+        .slot:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--egg);
+        }
+
+        .slot.active {
+            background: linear-gradient(135deg, #8B6914, #D4A017);
+            border: 2px solid var(--egg);
+        }
+
+        .combine-btn {
+            background: linear-gradient(135deg, var(--accent), #ff8e8e);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .combine-btn:hover {
+            transform: scale(1.15) rotate(90deg);
+        }
+
+        .result {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .result-element {
+            background: linear-gradient(135deg, var(--success), #388E3C);
+            border-radius: 16px;
+            padding: 2rem;
+            display: inline-block;
+            margin-top: 1.5rem;
+            min-width: 250px;
+            border: 2px solid var(--egg);
+        }
+
+        .result-element i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-element span {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .card {
+            background: rgba(44, 44, 44, 0.8);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 1.2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, var(--egg), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #555, #333);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.1);
+        }
+
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent), #ff8e8e);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #388E3C);
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #2C2C2C, #1A1A1A);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 700px;
+            padding: 2.5rem;
+            border: 2px solid var(--egg);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .close-btn:hover {
+            color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .account-list, .pet-collection, .recipe-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .account-item, .pet-card, .recipe-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .account-item:hover, .pet-card:hover, .recipe-card:hover {
+            transform: scale(1.05);
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .secret-message {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--egg);
+            display: none;
+            z-index: 1000;
+        }
+
+        footer {
+            background-color: rgba(44, 44, 44, 0.9);
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 2rem;
+            border-top: 1px solid var(--egg);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        @media (max-width: 1024px) {
+            .game-area {
+                grid-template-columns: 1fr;
+            }
+            .crafting-area {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Easter Eggs scattered around -->
+    <div class="easter-egg egg-1" data-secret="chocolate">🍫</div>
+    <div class="easter-egg egg-2" data-secret="bunny">🐰</div>
+    <div class="easter-egg egg-3" data-secret="hidden">🥚</div>
+    <div class="easter-egg egg-4" data-secret="surprise">🎁</div>
+    <div class="easter-egg egg-5" data-secret="magic">✨</div>
+    <div class="easter-egg egg-6" data-secret="rainbow">🌈</div>
+
+    <div class="bunny-ears">🐰</div>
+
+    <header>
+        <div class="logo">
+            <i class="fas fa-egg"></i>
+            <h1>Infinite Craft | Easter Edition</h1>
+        </div>
+        <div class="holiday-links">
+            <a href="easter.html" class="holiday-link" style="background: var(--egg); color: #333;">🐰 Easter</a>
+            <a href="christmas.html" class="holiday-link">🎄 Christmas</a>
+            <a href="halloween.html" class="holiday-link">🎃 Halloween</a>
+            <a href="newyear.html" class="holiday-link">🎆 New Year</a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" id="recipes-btn"><i class="fas fa-book"></i> Recipes</a></li>
+                <li><a href="#" id="pets-btn"><i class="fas fa-paw"></i> Pets</a></li>
+                <li><a href="#" id="accounts-btn"><i class="fas fa-users"></i> Accounts</a></li>
+            </ul>
+        </nav>
+        <div class="account-info">
+            <span class="account-name" id="current-account">Guest</span>
+            <button class="btn btn-accent" id="switch-account-btn" style="padding: 0.5rem 1rem;">
+                <i class="fas fa-sync-alt"></i> Switch
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="game-area">
+            <div class="crafting-board">
+                <div class="board-title">
+                    <h2><i class="fas fa-egg"></i> Easter Crafting</h2>
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn btn-accent" id="new-game-btn">
+                            <i class="fas fa-plus"></i> New Game
+                        </button>
+                        <button class="btn" id="easter-surprise-btn">
+                            <i class="fas fa-gift"></i> Surprise!
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="elements-grid" id="elements-grid"></div>
+                
+                <div class="crafting-area">
+                    <div class="slot" id="slot1">
+                        <i class="fas fa-question"></i>
+                        <span>Click to select</span>
+                    </div>
+                    <button class="combine-btn" id="combine-btn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <div class="slot" id="slot2">
+                        <i class="fas fa-question"></i>
+                        <span>Click to select</span>
+                    </div>
+                </div>
+                
+                <div class="result">
+                    <h3>Result:</h3>
+                    <div class="result-element" id="result-element">
+                        <i class="fas fa-egg"></i>
+                        <span>Combine elements to discover Easter treats!</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar">
+                <div class="card">
+                    <h3><i class="fas fa-chart-line"></i> Easter Stats</h3>
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value" id="elements-count">0</div>
+                            <div class="stat-label">Elements</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="combinations-count">0</div>
+                            <div class="stat-label">Combos</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="eggs-found">0</div>
+                            <div class="stat-label">Easter Eggs</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-star"></i> Discoveries</h3>
+                    <div class="discoveries-list" id="discoveries-list">
+                        <div style="text-align: center;">No discoveries yet</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-tools"></i> Actions</h3>
+                    <div class="action-buttons">
+                        <button class="btn btn-success" id="save-btn">
+                            <i class="fas fa-save"></i> Save
+                        </button>
+                        <button class="btn" id="load-btn">
+                            <i class="fas fa-folder-open"></i> Load
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="accounts-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-users"></i> Easter Accounts</h2>
+                <button class="close-btn" id="close-accounts">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Create New Account</label>
+                    <input type="text" id="new-account-name" placeholder="Account name" style="width:100%; padding:0.8rem; margin-bottom:1rem;">
+                    <input type="password" id="new-account-password" placeholder="Password" style="width:100%; padding:0.8rem;">
+                    <button class="btn btn-success" id="create-account-btn" style="margin-top:1rem; width:100%;">Create Account</button>
+                </div>
+                <h3>Your Accounts</h3>
+                <div class="account-list" id="account-list"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="close-accounts-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="recipes-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-book"></i> Easter Recipes</h2>
+                <button class="close-btn" id="close-recipes">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="recipe-list" id="recipe-list"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="close-recipes-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="pets-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-paw"></i> Easter Pets</h2>
+                <button class="close-btn" id="close-pets">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="pet-collection" id="pet-collection"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="close-pets-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="secret-message" id="secret-message">🎉 Easter Egg Found! 🎉</div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="copyright">🐰 Happy Easter 2024! 🥚</div>
+            <div class="footer-links">
+                <a href="#">Find All Eggs</a>
+                <a href="#">Easter Hunt</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Easter-themed elements
+        const easterElements = [
+            { id: 'egg', name: 'Egg', icon: 'fas fa-egg', type: 'easter' },
+            { id: 'bunny', name: 'Bunny', icon: 'fas fa-rabbit', type: 'pet' },
+            { id: 'chocolate', name: 'Chocolate', icon: 'fas fa-candy-cane', type: 'food' },
+            { id: 'basket', name: 'Basket', icon: 'fas fa-basket-shopping', type: 'basic' },
+            { id: 'carrot', name: 'Carrot', icon: 'fas fa-carrot', type: 'food' },
+            { id: 'spring', name: 'Spring', icon: 'fas fa-seedling', type: 'basic' },
+            { id: 'flower', name: 'Flower', icon: 'fas fa-leaf', type: 'basic' },
+            { id: 'water', name: 'Water', icon: 'fas fa-tint', type: 'basic' },
+            { id: 'fire', name: 'Fire', icon: 'fas fa-fire', type: 'basic' },
+            { id: 'earth', name: 'Earth', icon: 'fas fa-mountain', type: 'basic' },
+            { id: 'wind', name: 'Wind', icon: 'fas fa-wind', type: 'basic' }
+        ];
+
+        // Easter combinations
+        const easterCombinations = {
+            'egg+water': { id: 'boiledegg', name: 'Boiled Egg', icon: 'fas fa-egg', type: 'food' },
+            'egg+fire': { id: 'scrambled', name: 'Scrambled Eggs', icon: 'fas fa-egg', type: 'food' },
+            'egg+earth': { id: 'neste', name: 'Nest', icon: 'fas fa-tree', type: 'basic' },
+            'egg+bunny': { id: 'easterbunny', name: 'Easter Bunny', icon: 'fas fa-rabbit', type: 'pet' },
+            'chocolate+egg': { id: 'chocolateegg', name: 'Chocolate Egg', icon: 'fas fa-candy-cane', type: 'food' },
+            'basket+egg': { id: 'easterbasket', name: 'Easter Basket', icon: 'fas fa-basket-shopping', type: 'basic' },
+            'carrot+bunny': { id: 'feedingbunny', name: 'Feeding Bunny', icon: 'fas fa-rabbit', type: 'pet' },
+            'spring+flower': { id: 'garden', name: 'Garden', icon: 'fas fa-seedling', type: 'basic' },
+            'water+earth': { id: 'mud', name: 'Mud', icon: 'fas fa-square', type: 'basic' },
+            'mud+egg': { id: 'dirtyegg', name: 'Dirty Egg', icon: 'fas fa-egg', type: 'basic' },
+            'egg+egg': { id: 'doubleegg', name: 'Double Egg', icon: 'fas fa-egg', type: 'easter' },
+            'bunny+bunny': { id: 'bunnyfamily', name: 'Bunny Family', icon: 'fas fa-rabbit', type: 'pet' }
+        };
+
+        // Easter eggs hidden locations
+        const hiddenEggs = [
+            { id: 'golden', name: 'Golden Egg', secret: 'golden', found: false },
+            { id: 'silver', name: 'Silver Egg', secret: 'silver', found: false },
+            { id: 'rainbow', name: 'Rainbow Egg', secret: 'rainbow', found: false }
+        ];
+
+        let gameState = {
+            elements: [...easterElements],
+            discoveries: [],
+            combinations: 0,
+            pets: ['bunny'],
+            easterEggsFound: 0
+        };
+
+        let accounts = { Guest: { password: '', gameState: JSON.parse(JSON.stringify(gameState)) } };
+        let currentAccount = 'Guest';
+        let selectedElement1 = null;
+        let selectedElement2 = null;
+
+        // DOM elements
+        const elementsGrid = document.getElementById('elements-grid');
+        const slot1 = document.getElementById('slot1');
+        const slot2 = document.getElementById('slot2');
+        const combineBtn = document.getElementById('combine-btn');
+        const resultElement = document.getElementById('result-element');
+        const elementsCount = document.getElementById('elements-count');
+        const combinationsCount = document.getElementById('combinations-count');
+        const eggsFound = document.getElementById('eggs-found');
+        const discoveriesList = document.getElementById('discoveries-list');
+
+        function renderElements() {
+            elementsGrid.innerHTML = '';
+            gameState.elements.forEach(element => {
+                const div = document.createElement('div');
+                div.className = `element ${element.type === 'easter' ? 'egg-element' : element.type === 'pet' ? 'bunny-element' : ''}`;
+                div.setAttribute('data-element', element.id);
+                div.innerHTML = `<i class="${element.icon}"></i><span>${element.name}</span>`;
+                div.addEventListener('click', () => selectElement(element));
+                elementsGrid.appendChild(div);
+            });
+            updateStats();
+        }
+
+        function selectElement(element) {
+            if (!selectedElement1) {
+                selectedElement1 = element;
+                slot1.innerHTML = `<i class="${element.icon}"></i><span>${element.name}</span>`;
+                slot1.classList.add('active');
+            } else if (!selectedElement2) {
+                selectedElement2 = element;
+                slot2.innerHTML = `<i class="${element.icon}"></i><span>${element.name}</span>`;
+                slot2.classList.add('active');
+            }
+        }
+
+        function findCombination(e1, e2) {
+            const key1 = `${e1}+${e2}`;
+            const key2 = `${e2}+${e1}`;
+            return easterCombinations[key1] || easterCombinations[key2] || null;
+        }
+
+        function combineElements() {
+            if (!selectedElement1 || !selectedElement2) {
+                alert('Select two elements to combine!');
+                return;
+            }
+
+            const result = findCombination(selectedElement1.id, selectedElement2.id);
+            
+            if (result) {
+                const isNew = !gameState.elements.some(e => e.id === result.id);
+                resultElement.innerHTML = `<i class="${result.icon}"></i><span>${result.name}</span>`;
+                
+                if (isNew) {
+                    gameState.elements.push(result);
+                    gameState.combinations++;
+                    if (result.type === 'pet') gameState.pets.push(result.id);
+                    
+                    gameState.discoveries.unshift({
+                        e1: selectedElement1.name,
+                        e2: selectedElement2.name,
+                        result: result.name,
+                        icon: result.icon
+                    });
+                    
+                    renderElements();
+                    updateDiscoveries();
+                    showSecretMessage(`🎉 Discovered ${result.name}! 🎉`);
+                    saveGame();
+                }
+            } else {
+                resultElement.innerHTML = `<i class="fas fa-times"></i><span>No Easter magic found! Try different elements.</span>`;
+            }
+            
+            setTimeout(() => {
+                selectedElement1 = null;
+                selectedElement2 = null;
+                slot1.innerHTML = '<i class="fas fa-question"></i><span>Click to select</span>';
+                slot2.innerHTML = '<i class="fas fa-question"></i><span>Click to select</span>';
+                slot1.classList.remove('active');
+                slot2.classList.remove('active');
+            }, 1500);
+            
+            updateStats();
+        }
+
+        function updateStats() {
+            elementsCount.textContent = gameState.elements.length;
+            combinationsCount.textContent = gameState.combinations;
+            eggsFound.textContent = gameState.easterEggsFound;
+        }
+
+        function updateDiscoveries() {
+            discoveriesList.innerHTML = '';
+            if (gameState.discoveries.length === 0) {
+                discoveriesList.innerHTML = '<div style="text-align: center;">No discoveries yet</div>';
+                return;
+            }
+            gameState.discoveries.slice(0, 5).forEach(d => {
+                const item = document.createElement('div');
+                item.className = 'discovery-item';
+                item.style.padding = '0.8rem';
+                item.style.borderBottom = '1px solid rgba(255,215,0,0.2)';
+                item.innerHTML = `<i class="${d.icon}"></i> ${d.e1} + ${d.e2} = ${d.result}`;
+                discoveriesList.appendChild(item);
+            });
+        }
+
+        function saveGame() {
+            if (accounts[currentAccount]) {
+                accounts[currentAccount].gameState = JSON.parse(JSON.stringify(gameState));
+                localStorage.setItem('easterAccounts', JSON.stringify(accounts));
+            }
+        }
+
+        function loadGame() {
+            if (accounts[currentAccount]) {
+                gameState = JSON.parse(JSON.stringify(accounts[currentAccount].gameState));
+                renderElements();
+                updateDiscoveries();
+                updateStats();
+            }
+        }
+
+        function showSecretMessage(msg) {
+            const msgDiv = document.getElementById('secret-message');
+            msgDiv.textContent = msg;
+            msgDiv.style.display = 'block';
+            setTimeout(() => msgDiv.style.display = 'none', 3000);
+        }
+
+        // Easter egg click handlers
+        document.querySelectorAll('.easter-egg').forEach(egg => {
+            egg.addEventListener('click', (e) => {
+                const secret = egg.getAttribute('data-secret');
+                showSecretMessage(`🎊 You found a ${secret} Easter Egg! +10 points 🎊`);
+                gameState.easterEggsFound++;
+                updateStats();
+                saveGame();
+                egg.style.opacity = '0.3';
+                egg.style.pointerEvents = 'none';
+            });
+        });
+
+        // Surprise button
+        document.getElementById('easter-surprise-btn').addEventListener('click', () => {
+            const surprises = ['🐰 Happy Easter!', '🥚 Egg Hunt Started!', '🌸 Spring has sprung!', '🍫 Chocolate for everyone!'];
+            const random = surprises[Math.floor(Math.random() * surprises.length)];
+            showSecretMessage(random);
+            
+            // Random chance to add a special element
+            if (Math.random() < 0.3) {
+                const specialEgg = { id: 'magicegg', name: 'Magic Egg', icon: 'fas fa-egg', type: 'easter' };
+                if (!gameState.elements.some(e => e.id === 'magicegg')) {
+                    gameState.elements.push(specialEgg);
+                    renderElements();
+                    showSecretMessage('✨ A Magic Egg appeared! ✨');
+                    saveGame();
+                }
+            }
+        });
+
+        // Account functions
+        function initAccounts() {
+            const saved = localStorage.getItem('easterAccounts');
+            if (saved) {
+                accounts = JSON.parse(saved);
+            } else {
+                accounts = { Guest: { password: '', gameState: JSON.parse(JSON.stringify(gameState)) } };
+            }
+            currentAccount = 'Guest';
+            gameState = JSON.parse(JSON.stringify(accounts[currentAccount].gameState));
+            renderElements();
+            updateDiscoveries();
+            updateStats();
+            document.getElementById('current-account').textContent = currentAccount;
+        }
+
+        function showAccountsModal() {
+            const list = document.getElementById('account-list');
+            list.innerHTML = '';
+            Object.keys(accounts).forEach(name => {
+                const item = document.createElement('div');
+                item.className = 'account-item';
+                item.innerHTML = `<strong>${name}</strong><button class="btn btn-accent switch-acc" data-name="${name}" style="padding:0.3rem 0.8rem;">Switch</button>`;
+                list.appendChild(item);
+            });
+            document.querySelectorAll('.switch-acc').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const name = btn.getAttribute('data-name');
+                    if (name !== currentAccount) {
+                        currentAccount = name;
+                        gameState = JSON.parse(JSON.stringify(accounts[currentAccount].gameState));
+                        renderElements();
+                        updateDiscoveries();
+                        updateStats();
+                        document.getElementById('current-account').textContent = currentAccount;
+                        showSecretMessage(`Switched to ${name}`);
+                        accountsModal.style.display = 'none';
+                    }
+                });
+            });
+            accountsModal.style.display = 'flex';
+        }
+
+        document.getElementById('create-account-btn').addEventListener('click', () => {
+            const name = document.getElementById('new-account-name').value.trim();
+            const pwd = document.getElementById('new-account-password').value;
+            if (name && !accounts[name]) {
+                accounts[name] = { password: pwd, gameState: JSON.parse(JSON.stringify(gameState)) };
+                localStorage.setItem('easterAccounts', JSON.stringify(accounts));
+                showSecretMessage(`Account ${name} created!`);
+                document.getElementById('new-account-name').value = '';
+                document.getElementById('new-account-password').value = '';
+                showAccountsModal();
+            } else {
+                alert('Invalid account name or already exists!');
+            }
+        });
+
+        // Event listeners
+        combineBtn.addEventListener('click', combineElements);
+        document.getElementById('new-game-btn').addEventListener('click', () => {
+            if (confirm('Start new Easter adventure?')) {
+                gameState = JSON.parse(JSON.stringify({ elements: [...easterElements], discoveries: [], combinations: 0, pets: ['bunny'], easterEggsFound: 0 }));
+                renderElements();
+                updateDiscoveries();
+                updateStats();
+                saveGame();
+                showSecretMessage('New Easter adventure begins! 🐰');
+            }
+        });
+        document.getElementById('save-btn').addEventListener('click', () => { saveGame(); showSecretMessage('Game saved!'); });
+        document.getElementById('load-btn').addEventListener('click', () => { loadGame(); showSecretMessage('Game loaded!'); });
+        document.getElementById('accounts-btn').addEventListener('click', showAccountsModal);
+        document.getElementById('switch-account-btn').addEventListener('click', showAccountsModal);
+        document.getElementById('recipes-btn').addEventListener('click', () => {
+            const recipeList = document.getElementById('recipe-list');
+            recipeList.innerHTML = '';
+            Object.keys(easterCombinations).forEach(key => {
+                const recipe = easterCombinations[key];
+                const card = document.createElement('div');
+                card.className = 'recipe-card';
+                card.innerHTML = `<i class="${recipe.icon}"></i><span>${recipe.name}</span><div style="font-size:0.8rem;">${key.replace('+', ' + ')}</div>`;
+                recipeList.appendChild(card);
+            });
+            recipesModal.style.display = 'flex';
+        });
+        document.getElementById('pets-btn').addEventListener('click', () => {
+            const petList = document.getElementById('pet-collection');
+            petList.innerHTML = '';
+            gameState.pets.forEach(petId => {
+                const pet = gameState.elements.find(e => e.id === petId);
+                if (pet) {
+                    const card = document.createElement('div');
+                    card.className = 'pet-card';
+                    card.innerHTML = `<i class="${pet.icon}"></i><span>${pet.name}</span>`;
+                    petList.appendChild(card);
+                }
+            });
+            petsModal.style.display = 'flex';
+        });
+
+        // Close modals
+        document.querySelectorAll('.close-btn, #close-accounts-btn, #close-recipes-btn, #close-pets-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                accountsModal.style.display = 'none';
+                recipesModal.style.display = 'none';
+                petsModal.style.display = 'none';
+            });
+        });
+
+        // Initialize
+        initAccounts();
+    </script>
+</body>
+</html>
